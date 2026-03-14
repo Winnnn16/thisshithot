@@ -1,0 +1,1936 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KhmeRoom — Book Hotels in Cambodia</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --green-900: #052e12;
+  --green-800: #0a4a1e;
+  --green-700: #0f6629;
+  --green-600: #158534;
+  --green-500: #1aa63f;
+  --green-400: #2dc653;
+  --green-300: #5dd87a;
+  --green-200: #9eeaaf;
+  --green-100: #d6f5dd;
+  --green-50: #f0faf3;
+  --accent-gold: #e8a020;
+  --accent-red: #e53935;
+  --text-dark: #0d1f12;
+  --text-body: #2d4a35;
+  --text-muted: #6b9074;
+  --white: #ffffff;
+  --bg: #f5f8f6;
+  --card-bg: #ffffff;
+  --card-border: #daeae0;
+  --card-shadow: 0 2px 14px rgba(15,102,41,0.07);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body {
+  font-family:'Poppins',sans-serif;
+  background:var(--bg);
+  color:var(--text-dark);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* NAVBAR */
+.navbar {
+  position:fixed;top:0;left:0;right:0;
+  z-index:1000;
+  background:rgba(255,255,255,0.97);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--card-border);
+  box-shadow:0 2px 16px rgba(15,102,41,0.07);
+  height:68px;
+  display:flex;align-items:center;
+  padding:0 32px;
+  gap:16px;
+}
+
+.nav-logo {
+  display:flex;align-items:center;gap:10px;
+  text-decoration:none;
+  flex-shrink:0;
+}
+
+.logo-icon {
+  width:38px;height:38px;
+  background:linear-gradient(135deg,var(--green-700),var(--green-500));
+  border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.2rem;
+  box-shadow:0 3px 12px rgba(15,102,41,0.3);
+}
+
+.logo-text {
+  font-family:'Playfair Display',serif;
+  font-weight:700;
+  font-size:1.45rem;
+  color:var(--green-800);
+  letter-spacing:-0.02em;
+}
+
+.logo-text span{color:var(--green-500);}
+
+.search-bar { display:none !important; }
+
+/* DROPDOWN PANELS */
+.dropdown-panel {
+  display:none;
+  position:absolute;
+  top:calc(100% + 10px);
+  left:0;
+  background:#fff;
+  border:1.5px solid var(--card-border);
+  border-radius:18px;
+  box-shadow:0 12px 40px rgba(15,102,41,0.14);
+  z-index:500;
+  padding:16px;
+  min-width:220px;
+  animation:dropIn 0.2s ease;
+}
+
+.dropdown-panel.open{display:block;}
+
+@keyframes dropIn{
+  from{opacity:0;transform:translateY(-8px);}
+  to{opacity:1;transform:translateY(0);}
+}
+
+.dest-option {
+  display:flex;align-items:center;gap:10px;
+  padding:10px 12px;
+  border-radius:10px;
+  cursor:pointer;
+  transition:background 0.15s;
+  font-size:0.85rem;
+  font-weight:500;
+  color:var(--text-body);
+}
+
+.dest-option:hover{background:var(--green-50);color:var(--green-700);}
+
+.dest-option .dest-emoji{font-size:1.2rem;}
+
+/* DATE PICKER */
+.date-picker-panel {
+  min-width:340px;
+  left:50%;
+  transform:translateX(-50%);
+}
+
+.date-range-inputs {
+  display:grid;grid-template-columns:1fr 1fr;gap:10px;
+}
+
+.date-input-group label {
+  display:block;
+  font-size:0.65rem;font-weight:700;
+  text-transform:uppercase;letter-spacing:0.07em;
+  color:var(--text-muted);margin-bottom:4px;
+}
+
+.date-input-group input[type="date"] {
+  width:100%;
+  padding:8px 10px;
+  border:1.5px solid var(--card-border);
+  border-radius:10px;
+  font-family:'Poppins',sans-serif;
+  font-size:0.82rem;
+  color:var(--text-dark);
+  background:#fff;
+  outline:none;
+  transition:border-color 0.2s;
+}
+
+.date-input-group input:focus{border-color:var(--green-500);}
+
+/* COUNTER */
+.counter-panel{min-width:260px;}
+
+.counter-row {
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 0;
+  border-bottom:1px solid rgba(15,102,41,0.06);
+}
+
+.counter-row:last-child{border-bottom:none;}
+
+.counter-label{font-size:0.88rem;font-weight:600;color:var(--text-dark);}
+.counter-sub{font-size:0.7rem;color:var(--text-muted);}
+
+.counter-controls{display:flex;align-items:center;gap:12px;}
+
+.counter-btn {
+  width:30px;height:30px;
+  border:1.5px solid var(--card-border);
+  border-radius:50%;
+  background:#fff;
+  cursor:pointer;
+  font-size:1.1rem;
+  color:var(--text-body);
+  display:flex;align-items:center;justify-content:center;
+  transition:all 0.15s;
+  font-weight:700;
+}
+
+.counter-btn:hover{border-color:var(--green-500);color:var(--green-700);background:var(--green-50);}
+.counter-btn:disabled{opacity:0.35;cursor:not-allowed;}
+
+.counter-num{font-size:0.95rem;font-weight:700;color:var(--text-dark);min-width:20px;text-align:center;}
+
+/* NAV RIGHT */
+.nav-right {
+  display:flex;align-items:center;gap:8px;
+  flex-shrink:0;
+}
+
+.nav-menu-btn {
+  display:flex;align-items:center;gap:8px;
+  padding:6px 12px 6px 16px;
+  background:#fff;
+  border:1.5px solid var(--card-border);
+  border-radius:50px;
+  cursor:pointer;
+  transition:box-shadow 0.2s, border-color 0.2s;
+  font-family:'Poppins',sans-serif;
+  position:relative;
+}
+
+.nav-menu-btn:hover{
+  box-shadow:0 4px 16px rgba(15,102,41,0.12);
+  border-color:var(--green-300);
+}
+
+.nav-menu-btn span{
+  font-size:0.8rem;font-weight:600;color:var(--text-body);
+}
+
+.hamburger {
+  display:flex;flex-direction:column;gap:4px;
+  padding:2px;
+}
+
+.hamburger div{
+  width:16px;height:2px;
+  background:var(--text-muted);
+  border-radius:2px;
+  transition:background 0.2s;
+}
+
+.nav-menu-btn:hover .hamburger div{background:var(--green-700);}
+
+.nav-avatar {
+  width:30px;height:30px;
+  border-radius:50%;
+  background:linear-gradient(135deg,var(--green-700),var(--green-400));
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.85rem;
+  color:#fff;
+}
+
+/* NAV DROPDOWN */
+.nav-dropdown {
+  display:none;
+  position:absolute;
+  top:calc(100% + 10px);
+  right:0;
+  background:#fff;
+  border:1.5px solid var(--card-border);
+  border-radius:18px;
+  box-shadow:0 12px 40px rgba(15,102,41,0.15);
+  z-index:999;
+  min-width:280px;
+  overflow:hidden;
+  animation:dropIn 0.2s ease;
+}
+
+.nav-dropdown.open{display:block;}
+
+.dropdown-section{
+  padding:16px 20px;
+  border-bottom:1px solid var(--card-border);
+}
+
+.dropdown-section:last-child{border-bottom:none;}
+
+.dropdown-section h4{
+  font-size:0.65rem;font-weight:700;
+  text-transform:uppercase;letter-spacing:0.08em;
+  color:var(--text-muted);margin-bottom:10px;
+}
+
+.dropdown-item {
+  display:flex;align-items:center;gap:10px;
+  padding:9px 10px;
+  border-radius:9px;
+  cursor:pointer;
+  font-size:0.84rem;font-weight:500;
+  color:var(--text-body);
+  transition:background 0.15s,color 0.15s;
+}
+
+.dropdown-item:hover{background:var(--green-50);color:var(--green-700);}
+.dropdown-item .item-icon{font-size:1rem;}
+
+.lang-options{display:flex;gap:7px;flex-wrap:wrap;margin-top:6px;}
+
+.lang-chip {
+  padding:5px 12px;
+  border:1.5px solid var(--card-border);
+  border-radius:20px;
+  font-size:0.75rem;font-weight:600;
+  cursor:pointer;
+  transition:all 0.15s;
+  color:var(--text-body);
+  background:#fff;
+}
+
+.lang-chip:hover,.lang-chip.active{
+  border-color:var(--green-500);
+  background:var(--green-50);
+  color:var(--green-700);
+}
+
+.login-btn {
+  display:block;
+  width:100%;
+  padding:11px;
+  background:var(--green-700);
+  color:#fff;
+  border:none;
+  border-radius:11px;
+  font-family:'Poppins',sans-serif;
+  font-size:0.85rem;font-weight:700;
+  cursor:pointer;
+  transition:background 0.2s;
+  margin-top:4px;
+}
+
+.login-btn:hover{background:var(--green-600);}
+
+/* HERO SECTION */
+.hero {
+  margin-top:68px;
+  position:relative;
+  overflow:hidden;
+  padding:90px 32px 200px;
+  text-align:center;
+  min-height:580px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+}
+
+/* Angkor Wat photo layer */
+.hero-bg-img {
+  position:absolute;inset:0;
+  background-image:url('DJI_0070L.jpg');
+  background-size:cover;
+  background-position:center 30%;
+  background-repeat:no-repeat;
+  transform:scale(1.04);
+  transition:transform 8s ease;
+}
+
+.hero:hover .hero-bg-img { transform:scale(1.0); }
+
+/* Deep layered overlay: keeps colours on-brand & text readable */
+.hero-overlay {
+  position:absolute;inset:0;
+  background:
+    /* warm green tint so it feels Cambodian-forest, not generic */
+    linear-gradient(
+      175deg,
+      rgba(5,46,18,0.82) 0%,
+      rgba(10,74,30,0.68) 38%,
+      rgba(15,102,41,0.55) 65%,
+      rgba(5,46,18,0.80) 100%
+    );
+  mix-blend-mode:multiply;
+}
+
+/* Second overlay: subtle gold warmth at the bottom (sunset / temple glow) */
+.hero-overlay-gold {
+  position:absolute;inset:0;
+  background:radial-gradient(ellipse 90% 55% at 50% 85%, rgba(232,160,32,0.18) 0%, transparent 70%);
+  pointer-events:none;
+}
+
+/* Grain texture for depth */
+.hero-grain {
+  position:absolute;inset:0;
+  opacity:0.035;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+  pointer-events:none;
+}
+
+/* Curved bottom wipe into page bg */
+.hero::after {
+  content:'';
+  position:absolute;
+  bottom:-2px;left:0;right:0;
+  height:90px;
+  background:var(--bg);
+  border-radius:50% 50% 0 0 / 36px 36px 0 0;
+  z-index:3;
+}
+
+/* All text content sits above overlays */
+.hero-content {
+  position:relative;
+  z-index:2;
+}
+
+.hero-eyebrow {
+  display:inline-flex;align-items:center;gap:8px;
+  margin-bottom:10px;
+}
+
+.hero-made-badge {
+  display:inline-flex;align-items:center;gap:7px;
+  background:rgba(232,160,32,0.18);
+  border:1px solid rgba(232,160,32,0.45);
+  border-radius:30px;
+  padding:5px 14px;
+  font-size:0.68rem;font-weight:700;
+  color:#f5c85a;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+}
+
+
+.hero-tag {
+  display:inline-flex;align-items:center;gap:7px;
+  background:rgba(255,255,255,0.08);
+  border:1px solid rgba(255,255,255,0.18);
+  border-radius:30px;
+  padding:5px 14px;
+  font-size:0.68rem;font-weight:600;
+  color:rgba(255,255,255,0.75);
+  letter-spacing:0.07em;
+  text-transform:uppercase;
+  margin-bottom:20px;
+}
+
+.hero-tag::before {
+  content:'';width:6px;height:6px;
+  border-radius:50%;background:var(--green-300);
+  animation:blink 2s ease-in-out infinite;flex-shrink:0;
+}
+
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0.3;}}
+
+.hero h1 {
+  font-family:'Playfair Display',serif;
+  font-size:clamp(2.4rem,5.5vw,4.2rem);
+  font-weight:800;
+  color:#fff;
+  line-height:1.08;
+  margin-bottom:16px;
+  letter-spacing:-0.025em;
+  text-shadow:0 2px 28px rgba(5,46,18,0.55);
+}
+
+.hero h1 em {
+  font-style:italic;
+  color:#7debb0;
+}
+
+.hero-sub {
+  font-size:1.02rem;
+  color:rgba(255,255,255,0.8);
+  max-width:500px;
+  margin:0 auto 28px;
+  line-height:1.72;
+  font-weight:400;
+  text-shadow:0 1px 12px rgba(5,46,18,0.5);
+}
+
+/* Local pride strip */
+.hero-pride {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:20px;
+  margin-top:24px;
+  flex-wrap:wrap;
+}
+
+.hero-pride-item {
+  display:flex;align-items:center;gap:7px;
+  background:rgba(255,255,255,0.08);
+  border:1px solid rgba(255,255,255,0.14);
+  border-radius:40px;
+  padding:6px 16px;
+  font-size:0.73rem;font-weight:600;
+  color:rgba(255,255,255,0.82);
+  backdrop-filter:blur(6px);
+  white-space:nowrap;
+}
+
+.hero-pride-item .pi-icon { font-size:0.95rem; }
+
+/* Angkor silhouette decorative SVG */
+.hero-silhouette {
+  position:absolute;
+  bottom:85px;left:50%;
+  transform:translateX(-50%);
+  width:min(680px,95vw);
+  opacity:0.07;
+  pointer-events:none;
+  z-index:1;
+}
+
+/* FLOATING SEARCH */
+.floating-search {
+  max-width:1000px;
+  margin:-50px auto 0;
+  padding:0 24px;
+  position:relative;
+  z-index:50;
+}
+
+.search-card {
+  background:#fff;
+  border:1.5px solid var(--card-border);
+  border-radius:20px;
+  box-shadow:0 16px 50px rgba(15,102,41,0.15);
+  padding:20px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.sc-segment {
+  flex:1;
+  display:flex;flex-direction:column;
+  padding:10px 14px;
+  border-radius:12px;
+  cursor:pointer;
+  transition:background 0.15s;
+  position:relative;
+  min-width:0;
+}
+
+.sc-segment:hover{background:var(--green-50);}
+
+.sc-label {
+  font-size:0.62rem;font-weight:700;
+  text-transform:uppercase;letter-spacing:0.07em;
+  color:var(--text-muted);margin-bottom:3px;
+}
+
+.sc-value {
+  font-size:0.9rem;font-weight:600;
+  color:var(--text-dark);
+  white-space:normal;
+  overflow:visible;
+  word-break:keep-all;
+}
+
+.sc-value.ph{color:#b0c4b8;font-weight:400;}
+
+.sc-divider{width:1px;height:36px;background:var(--card-border);flex-shrink:0;}
+
+.sc-search-btn {
+  background:linear-gradient(135deg,var(--green-800),var(--green-700));
+  border:none;
+  padding:14px 28px;
+  border-radius:12px;
+  cursor:pointer;
+  display:flex;align-items:center;gap:8px;
+  font-family:'Poppins',sans-serif;
+  font-size:0.88rem;font-weight:500;
+  color:#fff;
+  flex-shrink:0;
+  transition:transform 0.15s,box-shadow 0.2s;
+  box-shadow:0 4px 16px rgba(15,102,41,0.35);
+}
+
+.sc-search-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(10, 63, 28, 0.4);}
+
+/* MAIN CONTENT */
+.main-content {
+  max-width:1280px;
+  margin:0 auto;
+  padding:40px 24px 60px;
+}
+
+/* FILTERS */
+.filters-row {
+  display:flex;align-items:center;gap:10px;
+  margin-bottom:28px;
+  overflow-x:auto;
+  padding-bottom:4px;
+  scrollbar-width:none;
+}
+
+.filters-row::-webkit-scrollbar{display:none;}
+
+.filter-chip {
+  display:flex;align-items:center;gap:6px;
+  padding:7px 16px;
+  background:#fff;
+  border:1.5px solid var(--card-border);
+  border-radius:50px;
+  font-size:0.78rem;font-weight:600;
+  color:var(--text-body);
+  cursor:pointer;
+  white-space:nowrap;
+  transition:all 0.15s;
+  flex-shrink:0;
+}
+
+.filter-chip:hover,.filter-chip.active{
+  background:var(--green-50);
+  border-color:var(--green-400);
+  color:var(--green-700);
+}
+
+.filter-chip.active{
+  background:var(--green-700);
+  color:#fff;
+  border-color:var(--green-700);
+}
+
+/* SECTION HEADER */
+.section-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:22px;
+}
+
+.section-title{
+  font-family:'Poppins',serif;
+  font-size:1.5rem;font-weight:600;
+  color:var(--green-900);
+}
+
+.section-sub{font-size:0.82rem;color:var(--text-muted);margin-top:2px;}
+
+.see-all {
+  font-size:0.82rem;font-weight:600;
+  color:var(--green-700);
+  cursor:pointer;
+  display:flex;align-items:center;gap:4px;
+  transition:gap 0.15s;
+  text-decoration:none;
+  border:none;background:none;font-family:'Poppins',sans-serif;
+}
+
+.see-all:hover{gap:8px;}
+
+/* HOTEL GRID */
+.hotel-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:22px;
+  margin-bottom:50px;
+}
+
+/* HOTEL CARD */
+.hotel-card {
+  background:#fff;
+  border-radius:16px;
+  overflow:hidden;
+  border:1px solid var(--card-border);
+  box-shadow:var(--card-shadow);
+  transition:transform 0.22s, box-shadow 0.22s;
+  cursor:pointer;
+  position:relative;
+}
+
+.hotel-card:hover{
+  transform:translateY(-5px);
+  box-shadow:0 18px 42px rgba(15,102,41,0.13);
+}
+
+.hotel-img-wrap {
+  position:relative;
+  aspect-ratio:1/1;
+  overflow:hidden;
+  background:var(--green-100);
+}
+
+.hotel-img-wrap img {
+  width:100%;height:100%;
+  object-fit:cover;
+  transition:transform 0.4s ease;
+  display:block;
+}
+
+.hotel-card:hover .hotel-img-wrap img{transform:scale(1.06);}
+
+.hotel-badge {
+  position:absolute;top:12px;left:12px;
+  background:rgba(255,255,255,0.95);
+  border-radius:7px;
+  padding:3px 9px;
+  font-size:0.65rem;font-weight:700;
+  color:var(--green-700);
+  letter-spacing:0.04em;
+  text-transform:uppercase;
+  box-shadow:0 2px 8px rgba(0,0,0,0.1);
+}
+
+.hotel-badge.gold{color:#92620a;background:rgba(255,251,235,0.95);}
+
+.hotel-wishlist {
+  position:absolute;top:10px;right:10px;
+  width:32px;height:32px;
+  background:rgba(255,255,255,0.85);
+  border:none;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;font-size:1rem;
+  transition:all 0.2s;
+  backdrop-filter:blur(4px);
+}
+
+.hotel-wishlist:hover{background:#fff;transform:scale(1.12);}
+.hotel-wishlist.liked{color:#e53935;}
+
+.hotel-info{padding:14px 14px 16px;}
+
+.hotel-location {
+  display:flex;align-items:center;gap:4px;
+  font-size:0.72rem;font-weight:600;
+  color:var(--text-muted);
+  margin-bottom:4px;
+  text-transform:uppercase;
+  letter-spacing:0.04em;
+}
+
+.hotel-location .loc-dot{
+  width:5px;height:5px;
+  border-radius:50%;
+  background:var(--green-400);
+  flex-shrink:0;
+}
+
+.hotel-name {
+  font-size:0.93rem;font-weight:700;
+  color:var(--green-900);
+  margin-bottom:6px;
+  line-height:1.3;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+
+.hotel-meta {
+  display:flex;align-items:center;justify-content:space-between;
+  margin-top:8px;
+}
+
+.hotel-rating {
+  display:flex;align-items:center;gap:4px;
+  font-size:0.78rem;font-weight:600;
+  color:var(--text-body);
+}
+
+.hotel-rating .star{color:var(--accent-gold);}
+
+.hotel-price {
+  font-size:0.9rem;font-weight:800;
+  color:var(--green-800);
+}
+
+.hotel-price span{
+  font-size:0.72rem;font-weight:400;
+  color:var(--text-muted);
+}
+
+.hotel-tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px;}
+
+.h-tag{
+  font-size:0.63rem;font-weight:600;
+  padding:3px 8px;
+  border-radius:20px;
+  background:var(--green-50);
+  border:1px solid var(--green-100);
+  color:var(--green-700);
+}
+
+/* DESTINATIONS SECTION */
+.dest-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:16px;
+  margin-bottom:50px;
+}
+
+.dest-card{
+  position:relative;
+  border-radius:16px;
+  overflow:hidden;
+  aspect-ratio:3/4;
+  cursor:pointer;
+}
+
+.dest-card img{
+  width:100%;height:100%;
+  object-fit:cover;
+  transition:transform 0.4s;
+}
+
+.dest-card:hover img{transform:scale(1.06);}
+
+.dest-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to top, rgba(5,46,18,0.75) 0%, transparent 55%);
+}
+
+.dest-info{
+  position:absolute;bottom:14px;left:14px;right:14px;
+}
+
+.dest-name{
+  font-family:'Playfair Display',serif;
+  font-size:1.15rem;font-weight:700;
+  color:#fff;margin-bottom:3px;
+}
+
+.dest-count{
+  font-size:0.72rem;font-weight:600;
+  color:var(--green-200);
+}
+
+/* WHY SECTION */
+.why-section{
+  background:var(--green-900);
+  border-radius:22px;
+  padding:44px 40px;
+  margin-bottom:50px;
+  position:relative;overflow:hidden;
+}
+
+.why-section::before{
+  content:'🇰🇭';
+  position:absolute;right:40px;top:50%;
+  transform:translateY(-50%);
+  font-size:8rem;
+  opacity:0.05;
+  pointer-events:none;
+}
+
+.why-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:24px;
+  margin-top:28px;
+}
+
+.why-card{
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:14px;
+  padding:20px;
+  transition:background 0.2s;
+}
+
+.why-card:hover{background:rgba(255,255,255,0.1);}
+
+.why-icon{font-size:1.6rem;margin-bottom:10px;}
+
+.why-title{
+  font-size:0.92rem;font-weight:700;
+  color:#fff;margin-bottom:6px;
+}
+
+.why-body{
+  font-size:0.78rem;
+  color:var(--green-200);
+  line-height:1.6;
+}
+
+/* MODAL */
+.modal-overlay{
+  display:none;
+  position:fixed;inset:0;
+  background:rgba(5,46,18,0.5);
+  z-index:2000;
+  align-items:center;justify-content:center;
+  backdrop-filter:blur(6px);
+}
+
+.modal-overlay.open{display:flex;animation:fadeIn 0.25s ease;}
+
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+
+.modal-box{
+  background:#fff;
+  border:1.5px solid var(--card-border);
+  border-radius:22px;
+  padding:36px;
+  width:92%;max-width:600px;
+  max-height:88vh;
+  overflow-y:auto;
+  position:relative;
+  box-shadow:0 24px 64px rgba(5,46,18,0.2);
+  animation:slideUp 0.25s ease;
+  scrollbar-width:thin;
+  scrollbar-color:var(--green-200) transparent;
+}
+
+@keyframes slideUp{
+  from{opacity:0;transform:translateY(20px);}
+  to{opacity:1;transform:translateY(0);}
+}
+
+.modal-close{
+  position:absolute;top:16px;right:16px;
+  width:34px;height:34px;
+  background:var(--green-50);
+  border:1.5px solid var(--card-border);
+  border-radius:9px;
+  cursor:pointer;
+  font-size:1rem;
+  color:var(--text-muted);
+  display:flex;align-items:center;justify-content:center;
+  transition:all 0.15s;
+}
+
+.modal-close:hover{background:#fef2f2;color:#e53935;border-color:#fecaca;}
+
+.modal-title{
+  font-family:'Playfair Display',serif;
+  font-size:1.6rem;font-weight:700;
+  color:var(--green-900);
+  margin-bottom:8px;
+  padding-right:40px;
+}
+
+.modal-sub{
+  font-size:0.84rem;
+  color:var(--text-body);
+  line-height:1.7;
+  margin-bottom:24px;
+}
+
+.modal-section{margin-bottom:22px;}
+
+.modal-section h3{
+  font-size:0.67rem;font-weight:700;
+  text-transform:uppercase;letter-spacing:0.08em;
+  color:var(--green-700);
+  margin-bottom:10px;
+  display:flex;align-items:center;gap:7px;
+}
+
+.modal-section h3::before{
+  content:'';width:11px;height:2.5px;
+  background:var(--green-700);border-radius:2px;
+}
+
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+
+.info-card{
+  background:var(--green-50);
+  border:1px solid var(--green-100);
+  border-radius:12px;
+  padding:14px;
+}
+
+.info-card h4{font-size:0.82rem;font-weight:700;color:var(--green-900);margin-bottom:4px;}
+.info-card p{font-size:0.74rem;color:var(--text-body);line-height:1.5;}
+
+.contact-row{
+  display:flex;align-items:center;gap:12px;
+  padding:10px 0;
+  border-bottom:1px solid rgba(15,102,41,0.07);
+  font-size:0.83rem;
+}
+
+.contact-row:last-child{border-bottom:none;}
+
+.contact-row .c-icon{font-size:1.1rem;}
+.contact-row .c-label{color:var(--text-muted);font-size:0.7rem;display:block;margin-bottom:1px;}
+.contact-row .c-val{font-weight:600;color:var(--text-dark);}
+
+/* TOAST */
+.toast{
+  position:fixed;bottom:24px;left:50%;
+  transform:translateX(-50%) translateY(80px);
+  background:var(--green-800);
+  color:#fff;
+  padding:12px 24px;
+  border-radius:50px;
+  font-size:0.84rem;font-weight:600;
+  box-shadow:0 8px 28px rgba(5,46,18,0.3);
+  z-index:9999;
+  transition:transform 0.35s cubic-bezier(0.34,1.56,0.64,1);
+  white-space:nowrap;
+}
+
+.toast.show{transform:translateX(-50%) translateY(0);}
+
+/* FOOTER */
+footer{
+  background:var(--green-900);
+  color:var(--green-200);
+  padding:48px 32px 32px;
+}
+
+.footer-inner{
+  max-width:1280px;margin:0 auto;
+  display:grid;
+  grid-template-columns:2fr 1fr 1fr 1fr;
+  gap:40px;
+  margin-bottom:36px;
+}
+
+.footer-logo{
+  font-family:'Playfair Display',serif;
+  font-size:1.4rem;font-weight:700;color:#fff;
+  display:flex;align-items:center;gap:10px;
+  margin-bottom:12px;
+}
+
+.footer-desc{font-size:0.8rem;line-height:1.7;color:var(--green-300);max-width:280px;}
+
+.footer-col h5{
+  font-size:0.67rem;font-weight:700;
+  text-transform:uppercase;letter-spacing:0.08em;
+  color:var(--green-400);
+  margin-bottom:12px;
+}
+
+.footer-link{
+  display:block;
+  font-size:0.81rem;font-weight:500;
+  color:var(--green-300);
+  margin-bottom:8px;
+  cursor:pointer;
+  transition:color 0.15s;
+  text-decoration:none;
+}
+
+.footer-link:hover{color:#fff;}
+
+.footer-bottom{
+  border-top:1px solid rgba(255,255,255,0.08);
+  padding-top:22px;
+  display:flex;align-items:center;justify-content:space-between;
+  max-width:1280px;margin:0 auto;
+  font-size:0.76rem;color:var(--text-muted);
+}
+
+.footer-flags{display:flex;gap:8px;font-size:1.1rem;}
+
+/* SKELETON / LOADING */
+@keyframes shimmer{
+  0%{background-position:-400px 0;}
+  100%{background-position:400px 0;}
+}
+
+.skeleton{
+  background:linear-gradient(90deg,#e8f5eb 25%,#d6f0dc 50%,#e8f5eb 75%);
+  background-size:800px 100%;
+  animation:shimmer 1.4s ease-in-out infinite;
+  border-radius:8px;
+}
+
+/* SCROLL TO TOP */
+.scroll-top {
+  position:fixed;bottom:28px;right:28px;
+  width:42px;height:42px;
+  background:var(--green-700);
+  color:#fff;border:none;border-radius:50%;
+  cursor:pointer;font-size:1.1rem;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 16px rgba(15,102,41,0.3);
+  transition:all 0.2s;
+  z-index:100;
+  opacity:0;transform:translateY(20px);
+}
+
+.scroll-top.visible{opacity:1;transform:translateY(0);}
+.scroll-top:hover{background:var(--green-600);transform:translateY(-2px);}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .navbar{padding:0 16px;gap:10px;}
+  .search-bar{display:none;}
+  .hero{padding:48px 16px 160px;}
+  .hero h1{font-size:2.1rem;}
+  .floating-search{padding:0 16px;margin:-50px auto 0;}
+  .search-card{flex-direction:column;gap:4px;}
+  .sc-divider{display:none;}
+  .main-content{padding:28px 16px 50px;}
+  .hotel-grid{grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;}
+  .dest-grid{grid-template-columns:1fr 1fr;}
+  .why-grid{grid-template-columns:1fr;}
+  .footer-inner{grid-template-columns:1fr 1fr;gap:24px;}
+  .info-grid{grid-template-columns:1fr;}
+}
+
+@media(max-width:480px){
+  .dest-grid{grid-template-columns:1fr;}
+  .hotel-grid{grid-template-columns:1fr 1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+
+  <!-- LOGO — wordmark only, no icon -->
+  <a class="nav-logo" href="#" onclick="return false;" style="flex-shrink:0;text-decoration:none;">
+    <div style="display:flex;flex-direction:column;line-height:1.05;">
+      <span style="font-family:'Playfair Display',serif;font-weight:800;font-size:1.45rem;letter-spacing:-0.03em;color:var(--green-900);">Khme<span style="color:var(--green-500);">Room</span></span>
+      <span style="font-size:0.5rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--text-muted);margin-top:1px;">Made in Cambodia</span>
+    </div>
+  </a>
+
+  <!-- SPACER -->
+  <div style="flex:1;"></div>
+
+  <!-- NAV RIGHT BUTTONS — pinned to the right -->
+  <div class="nav-right" style="margin-left:0;">
+
+    <!-- About Us -->
+    <div style="position:relative;">
+      <button class="nav-menu-btn" onclick="toggleNavMenu('aboutMenu')">
+        <span>About Us</span>
+        <div class="hamburger"><div></div><div></div></div>
+      </button>
+      <div class="nav-dropdown" id="aboutMenu">
+        <div class="dropdown-section">
+          <h4>About KhmeRoom</h4>
+          <div class="dropdown-item" onclick="openModal('modal-about')"><span class="item-icon"></span> Our Story</div>
+          <div class="dropdown-item" onclick="openModal('modal-about')"><span class="item-icon"></span> Cambodia's Platform</div>
+          <div class="dropdown-item" onclick="openModal('modal-about')"><span class="item-icon"></span> Partner With Us</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Support -->
+    <div style="position:relative;">
+      <button class="nav-menu-btn" onclick="toggleNavMenu('supportMenu')">
+        <span>Support</span>
+        <div class="hamburger"><div></div><div></div></div>
+      </button>
+      <div class="nav-dropdown" id="supportMenu">
+        <div class="dropdown-section">
+          <h4>Contact Support</h4>
+          <div class="dropdown-item" onclick="openModal('modal-support')"><span class="item-icon">💬</span> Live Chat</div>
+          <div class="dropdown-item" onclick="openModal('modal-support')"><span class="item-icon">📧</span> Email Us</div>
+          <div class="dropdown-item" onclick="openModal('modal-support')"><span class="item-icon">📞</span> Phone Support</div>
+          <div class="dropdown-item" onclick="openModal('modal-support')"><span class="item-icon">❓</span> Help Center</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Language -->
+    <div style="position:relative;">
+      <button class="nav-menu-btn" onclick="toggleNavMenu('langMenu')">
+        <span id="langDisplay">ENG</span>
+        <div class="hamburger"><div></div><div></div></div>
+      </button>
+      <div class="nav-dropdown" id="langMenu" style="min-width:200px;right:0;">
+        <div class="dropdown-section">
+          <h4>Language</h4>
+          <div class="lang-options">
+            <span class="lang-chip active" onclick="setLang('ENG','ENG')">English</span>
+            <span class="lang-chip" onclick="setLang('KH','ខ្មែរ')">ខ្មែរ</span>
+            <span class="lang-chip" onclick="setLang('CN','中文')">中文</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Log In -->
+    <div style="position:relative;">
+      <button class="nav-menu-btn" onclick="openModal('modal-login')" style="background:var(--green-700);border-color:var(--green-700);">
+        <span style="color:#fff;font-weight:700;">Log In</span>
+        <div class="nav-avatar">👤</div>
+      </button>
+    </div>
+
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+
+  <!-- Photo background -->
+  <div class="hero-bg-img"></div>
+  <!-- Overlays -->
+  <div class="hero-overlay"></div>
+  <div class="hero-overlay-gold"></div>
+  <div class="hero-grain"></div>
+
+  <!-- Angkor Wat decorative silhouette (faint, bottom-centre) -->
+  <svg class="hero-silhouette" viewBox="0 0 680 120" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <!-- Central tower -->
+    <rect x="315" y="20" width="50" height="95" fill="white"/>
+    <polygon points="340,0 310,22 370,22" fill="white"/>
+    <rect x="325" y="8" width="30" height="14" fill="white"/>
+    <!-- Left tower -->
+    <rect x="240" y="42" width="36" height="73" fill="white"/>
+    <polygon points="258,28 236,44 280,44" fill="white"/>
+    <!-- Right tower -->
+    <rect x="404" y="42" width="36" height="73" fill="white"/>
+    <polygon points="422,28 400,44 444,44" fill="white"/>
+    <!-- Far left tower -->
+    <rect x="152" y="58" width="28" height="57" fill="white"/>
+    <polygon points="166,46 148,60 184,60" fill="white"/>
+    <!-- Far right tower -->
+    <rect x="500" y="58" width="28" height="57" fill="white"/>
+    <polygon points="514,46 496,60 532,60" fill="white"/>
+    <!-- Gallery walls -->
+    <rect x="0" y="95" width="316" height="20" fill="white"/>
+    <rect x="364" y="95" width="316" height="20" fill="white"/>
+    <!-- Moat / base line -->
+    <rect x="0" y="113" width="680" height="7" fill="white"/>
+    <!-- Tree canopy left -->
+    <ellipse cx="60" cy="90" rx="44" ry="28" fill="white" opacity="0.6"/>
+    <ellipse cx="110" cy="82" rx="32" ry="22" fill="white" opacity="0.5"/>
+    <!-- Tree canopy right -->
+    <ellipse cx="620" cy="90" rx="44" ry="28" fill="white" opacity="0.6"/>
+    <ellipse cx="570" cy="82" rx="32" ry="22" fill="white" opacity="0.5"/>
+  </svg>
+
+  <!-- Text content -->
+  <div class="hero-content">
+
+    <!-- Gold "Made by Cambodians" badge -->
+    <div style="margin-bottom:12px;">
+      <span class="hero-made-badge">Made by Cambodians, for Cambodia</span>
+    </div>
+
+    <div class="hero-tag">Cambodia's #1 Local Booking Platform</div>
+
+    <h1>Find Your Perfect Stay<br>in <em>Beautiful Cambodia</em></h1>
+
+    <p class="hero-sub">
+      From the ancient spires of Angkor to the pepper fields of Kampot 
+      discover handpicked hotels, guesthouses &amp; resorts with local pricing, local payments, and local heart.
+    </p>
+
+    <!-- Local pride badges -->
+    <div class="hero-pride">
+      <div class="hero-pride-item"><span class="pi-icon">💳</span> ABA Pay &amp; KHQR</div>
+      <div class="hero-pride-item"><span class="pi-icon">🤝</span> Only 10% Commission</div>
+      <div class="hero-pride-item"><span class="pi-icon">🇰🇭</span> Khmer-First Support</div>
+      <div class="hero-pride-item"><span class="pi-icon">⭐</span> Verified Local Reviews</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FLOATING SEARCH CARD -->
+<div class="floating-search">
+  <div class="search-card">
+    <div class="sc-segment" onclick="toggleDropdown('scDestDrop')">
+      <div class="sc-label">Destination</div>
+      <div class="sc-value ph" id="scDest">Where are you going?</div>
+      <div class="dropdown-panel" id="scDestDrop" style="top:calc(100% + 8px);left:0;">
+        <div class="dest-option" onclick="selectScDest('Siem Reap')"><span class="dest-emoji"></span> Siem Reap</div>
+        <div class="dest-option" onclick="selectScDest('Phnom Penh')"><span class="dest-emoji"></span> Phnom Penh</div>
+        <div class="dest-option" onclick="selectScDest('Kep')"><span class="dest-emoji"></span> Kep</div>
+        <div class="dest-option" onclick="selectScDest('Kampot')"><span class="dest-emoji"></span> Kampot</div>
+        <div class="dest-option" onclick="selectScDest('Anywhere')"><span class="dest-emoji"></span> Anywhere</div>
+      </div>
+    </div>
+    <div class="sc-divider"></div>
+    <div class="sc-segment" onclick="toggleDropdown('scCheckInDrop')" style="flex:1.1;">
+      <div class="sc-label">Check-in</div>
+      <div class="sc-value ph" id="scCheckInDisplay">Add date</div>
+      <div class="dropdown-panel" id="scCheckInDrop" style="min-width:210px;top:calc(100% + 8px);" onclick="event.stopPropagation()">
+        <div class="date-input-group">
+          <label>Check-in date</label>
+          <input type="date" id="scCheckIn" oninput="updateScDates()">
+        </div>
+      </div>
+    </div>
+    <div class="sc-divider"></div>
+    <div class="sc-segment" onclick="toggleDropdown('scCheckOutDrop')" style="flex:1.1;">
+      <div class="sc-label">Check-out</div>
+      <div class="sc-value ph" id="scCheckOutDisplay">Add date</div>
+      <div class="dropdown-panel" id="scCheckOutDrop" style="min-width:210px;top:calc(100% + 8px);" onclick="event.stopPropagation()">
+        <div class="date-input-group">
+          <label>Check-out date</label>
+          <input type="date" id="scCheckOut" oninput="updateScDates()">
+        </div>
+      </div>
+    </div>
+    <div class="sc-divider"></div>
+    <div class="sc-segment" onclick="toggleDropdown('scRoomDrop')">
+      <div class="sc-label">Rooms</div>
+      <div class="sc-value ph" id="scRoomVal">Add rooms</div>
+      <div class="dropdown-panel counter-panel" id="scRoomDrop" style="top:calc(100% + 8px);" onclick="event.stopPropagation()">
+        <div class="counter-row">
+          <div><div class="counter-label">Rooms</div></div>
+          <div class="counter-controls">
+            <button class="counter-btn" onclick="decrement('scRooms')" id="scRoomMinus" disabled>−</button>
+            <span class="counter-num" id="scRoomCount">1</span>
+            <button class="counter-btn" onclick="increment('scRooms')">+</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="sc-divider"></div>
+    <div class="sc-segment" onclick="toggleDropdown('scGuestDrop')">
+      <div class="sc-label">Guests</div>
+      <div class="sc-value ph" id="scGuestVal">Add guests</div>
+      <div class="dropdown-panel counter-panel" id="scGuestDrop" style="top:calc(100% + 8px);" onclick="event.stopPropagation()">
+        <div class="counter-row">
+          <div><div class="counter-label">Adults</div><div class="counter-sub">Ages 13+</div></div>
+          <div class="counter-controls">
+            <button class="counter-btn" onclick="decrement('scAdults')" id="scAdultMinus" disabled>−</button>
+            <span class="counter-num" id="scAdultCount">1</span>
+            <button class="counter-btn" onclick="increment('scAdults')">+</button>
+          </div>
+        </div>
+        <div class="counter-row">
+          <div><div class="counter-label">Children</div><div class="counter-sub">Ages 2–12</div></div>
+          <div class="counter-controls">
+            <button class="counter-btn" onclick="decrement('scChildren')" id="scChildMinus" disabled>−</button>
+            <span class="counter-num" id="scChildCount">0</span>
+            <button class="counter-btn" onclick="increment('scChildren')">+</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button class="sc-search-btn" onclick="doSearch()">🔍 Search</button>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<main class="main-content">
+
+  <!-- FILTER CHIPS -->
+  <div class="filters-row">
+    <div class="filter-chip active" onclick="filterHotels('all',this)">🏨 All</div>
+    <div class="filter-chip" onclick="filterHotels('Siem Reap',this)">🏛️ Siem Reap</div>
+    <div class="filter-chip" onclick="filterHotels('Phnom Penh',this)">🌆 Phnom Penh</div>
+    <div class="filter-chip" onclick="filterHotels('Kampot',this)">🌿 Kampot</div>
+    <div class="filter-chip" onclick="filterHotels('Kep',this)">🦀 Kep</div>
+    <div class="filter-chip" onclick="filterHotels('pool',this)">🏊 Pool</div>
+    <div class="filter-chip" onclick="filterHotels('spa',this)">💆 Spa</div>
+    <div class="filter-chip" onclick="filterHotels('budget',this)">💰 Budget</div>
+    <div class="filter-chip" onclick="filterHotels('luxury',this)">✨ Luxury</div>
+    <div class="filter-chip" onclick="filterHotels('riverside',this)">🌊 Riverside</div>
+  </div>
+
+  <!-- DESTINATIONS -->
+  <div class="section-header">
+    <div>
+      <div class="section-title">Explore Destinations</div>
+      <div class="section-sub">Cambodia's most beloved places to stay</div>
+    </div>
+  </div>
+
+  <div class="dest-grid" style="margin-bottom:50px;">
+    <div class="dest-card" onclick="filterHotels('Siem Reap',null);showToast('Showing Siem Reap hotels')">
+      <img src="https://images.unsplash.com/photo-1563492065599-3520f775eeed?w=400&q=80" alt="Siem Reap" loading="lazy">
+      <div class="dest-overlay"></div>
+      <div class="dest-info">
+        <div class="dest-name">Siem Reap</div>
+        <div class="dest-count">18 properties</div>
+      </div>
+    </div>
+    <div class="dest-card" onclick="filterHotels('Phnom Penh',null);showToast('Showing Phnom Penh hotels')">
+      <img src="https://images.unsplash.com/photo-1555217851-6141535bd771?w=400&q=80" alt="Phnom Penh" loading="lazy">
+      <div class="dest-overlay"></div>
+      <div class="dest-info">
+        <div class="dest-name">Phnom Penh</div>
+        <div class="dest-count">15 properties</div>
+      </div>
+    </div>
+    <div class="dest-card" onclick="filterHotels('Kampot',null);showToast('Showing Kampot hotels')">
+      <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&q=80" alt="Kampot" loading="lazy">
+      <div class="dest-overlay"></div>
+      <div class="dest-info">
+        <div class="dest-name">Kampot</div>
+        <div class="dest-count">9 properties</div>
+      </div>
+    </div>
+    <div class="dest-card" onclick="filterHotels('Kep',null);showToast('Showing Kep hotels')">
+      <img src="https://images.unsplash.com/photo-1586190848861-99aa4a171e90?w=400&q=80" alt="Kep" loading="lazy">
+      <div class="dest-overlay"></div>
+      <div class="dest-info">
+        <div class="dest-name">Kep</div>
+        <div class="dest-count">8 properties</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HOTELS -->
+  <div class="section-header">
+    <div>
+      <div class="section-title">Featured Properties</div>
+      <div class="section-sub" id="hotelSubtitle">50 properties across Cambodia</div>
+    </div>
+    <button class="see-all" onclick="showToast('Loading all properties…')">View all →</button>
+  </div>
+
+  <div class="hotel-grid" id="hotelGrid">
+    <!-- Hotels injected by JS -->
+  </div>
+
+  <!-- WHY KHMEROOM -->
+  <div class="why-section">
+    <div>
+      <div style="font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--green-400);margin-bottom:10px;">Why Choose KhmeRoom</div>
+      <div style="font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:700;color:#fff;">Built for Cambodia. <em style="color:var(--green-300);font-style:italic;">By Cambodians.</em></div>
+    </div>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="why-icon">💳</div>
+        <div class="why-title">Local Payments</div>
+        <div class="why-body">Pay with ABA Pay, Wing, KHQR, USD or KHR. Instant SMS confirmation for every booking.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">🤝</div>
+        <div class="why-title">Low Commission</div>
+        <div class="why-body">Only 10% commission vs 20–22% from Booking.com or Agoda. Hotels earn more, prices stay fair.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">🇰🇭</div>
+        <div class="why-title">Khmer-First Support</div>
+        <div class="why-body">Full Khmer language support. Local customer care via Telegram, phone, and chat.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">📱</div>
+        <div class="why-title">Mobile-Friendly</div>
+        <div class="why-body">Fast on 4G. Works seamlessly for all ages. Available on iOS and Android.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">⭐</div>
+        <div class="why-title">Verified Reviews</div>
+        <div class="why-body">Only guests who've actually stayed can leave reviews. Honest, trustworthy feedback.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">🔒</div>
+        <div class="why-title">Safe & Secure</div>
+        <div class="why-body">All transactions secured. Hotel partners are verified. Your stay is guaranteed or money back.</div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-logo">
+        <svg width="34" height="34" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="44" height="44" rx="12" fill="url(#footerLogoGrad)"/>
+          <path d="M22 7 L28 14 H16 Z" fill="white" opacity="0.95"/>
+          <path d="M19 13 L25 13 L25 20 L19 20 Z" fill="white" opacity="0.85"/>
+          <rect x="13" y="20" width="18" height="13" rx="2" fill="white" opacity="0.95"/>
+          <rect x="19" y="25" width="6" height="8" rx="1.5" fill="url(#footerLogoGrad)"/>
+          <rect x="14.5" y="22" width="4" height="3.5" rx="1" fill="url(#footerLogoGrad)" opacity="0.7"/>
+          <rect x="25.5" y="22" width="4" height="3.5" rx="1" fill="url(#footerLogoGrad)" opacity="0.7"/>
+          <circle cx="22" cy="6" r="1.5" fill="#e8a020"/>
+          <defs>
+            <linearGradient id="footerLogoGrad" x1="0" y1="0" x2="44" y2="44" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#0a4a1e"/>
+              <stop offset="100%" stop-color="#1aa63f"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        KhmeRoom
+      </div>
+      <p class="footer-desc">Cambodia's local hotel booking platform. Built for domestic & ASEAN travelers powered by local payments, Khmer-first support, and a love for this country.</p>
+    </div>
+    <div class="footer-col">
+      <h5>Explore</h5>
+      <a class="footer-link" href="#">Siem Reap</a>
+      <a class="footer-link" href="#">Phnom Penh</a>
+      <a class="footer-link" href="#">Kampot</a>
+      <a class="footer-link" href="#">Kep</a>
+      <a class="footer-link" href="#">Sihanoukville</a>
+    </div>
+    <div class="footer-col">
+      <h5>Company</h5>
+      <a class="footer-link" onclick="openModal('modal-about')" href="#">About Us</a>
+      <a class="footer-link" href="#">Amazing</a>
+      <a class="footer-link" href="#">Investors</a>
+      <a class="footer-link" href="#">Blog</a>
+    </div>
+    <div class="footer-col">
+      <h5>Support</h5>
+      <a class="footer-link" onclick="openModal('modal-support')"
+      <a class="footer-link" href="#">Cancel Booking</a>
+      <a class="footer-link" href="#">Report Issue</a>
+      <a class="footer-link" href="#">FUCK YOU</a>
+      <a class="footer-link" href="#">Privacy Policy</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 By ME Bitch.</span>
+    <span>🌍 Made with ❤️ in Phnom Penh</span>
+  </div>
+</footer>
+
+<!-- SCROLL TO TOP -->
+<button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- MODAL: ABOUT -->
+<div class="modal-overlay" id="modal-about" onclick="closeModalOutside(event,'modal-about')">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('modal-about')">✕</button>
+    <div class="modal-title">About KhmeRoom 🏡</div>
+    <p class="modal-sub">Cambodia's first hyper-local hotel booking platform built for domestic & ASEAN travelers, powered by local payments, and championing hotel owners across the kingdom.</p>
+    <div class="modal-section">
+      <h3>Our Mission</h3>
+      <p style="font-size:0.84rem;color:var(--text-body);line-height:1.7;">KhmeRoom exists to make booking accommodation in Cambodia simple, trusted, and fair. We believe every guesthouse, boutique hotel, and resort — from Siem Reap to Kep — deserves a platform that truly understands them. A billion-dollar OTA cannot replicate local payments and human trust at guesthouse scale in Cambodia. We can.</p>
+    </div>
+    <div class="modal-section">
+      <h3>Our Advantage</h3>
+      <div class="info-grid">
+        <div class="info-card">
+          <h4>💳 Local Payments</h4>
+          <p>ABA Pay, Wing, KHQR instant checkout. USD + KHR support.</p>
+        </div>
+        <div class="info-card">
+          <h4>🤝 Low Commission</h4>
+          <p>Just 10% commission vs 20–22% from Booking.com or Agoda.</p>
+        </div>
+        <div class="info-card">
+          <h4>🇰🇭 Khmer-First</h4>
+          <p>Full Khmer language support from day one. Local human care.</p>
+        </div>
+        <div class="info-card">
+          <h4>📱 Mobile-Native</h4>
+          <p>React Native app for iOS & Android. Fast on 4G for all ages.</p>
+        </div>
+      </div>
+    </div>
+    <div class="modal-section">
+      <h3>Market Opportunity</h3>
+      <p style="font-size:0.84rem;color:var(--text-body);line-height:1.7;margin-bottom:10px;">Cambodia welcomed over <strong>6.7 million international tourists in 2024</strong>, with domestic travel growing 89% year-on-year. The booking market is dominated by international OTAs charging hotels 20–22% commission. KhmeRoom changes this — helping local hotels keep more revenue while offering travelers a better deal.</p>
+    </div>
+    <div class="modal-section">
+      <h3>Our Team</h3>
+      <p style="font-size:0.84rem;color:var(--text-body);line-height:1.7;">Built by a small, passionate team in Phnom Penh. 2 developers + 1 sales rep. Target: first live booking within 6–8 weeks. We start small, learn fast, and grow with confidence.</p>
+    </div>
+    <div style="margin-top:18px;display:flex;gap:10px;flex-wrap:wrap;">
+      <button style="background:var(--green-700);color:#fff;border:none;padding:11px 22px;border-radius:11px;font-family:'Poppins',sans-serif;font-size:0.84rem;font-weight:700;cursor:pointer;" onclick="closeModal('modal-about');openModal('modal-support')">Contact Us →</button>
+      <button style="background:#fff;border:1.5px solid var(--card-border);color:var(--text-body);padding:11px 22px;border-radius:11px;font-family:'Poppins',sans-serif;font-size:0.84rem;font-weight:600;cursor:pointer;" onclick="closeModal('modal-about')">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: SUPPORT -->
+<div class="modal-overlay" id="modal-support" onclick="closeModalOutside(event,'modal-support')">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('modal-support')">✕</button>
+    <div class="modal-title">Contact Support 💬</div>
+    <p class="modal-sub">We're here to help. Reach us in Khmer or English — our local team responds fast.</p>
+    <div class="modal-section">
+      <h3>Get In Touch</h3>
+      <div class="contact-row">
+        <span class="c-icon">📧</span>
+        <div><span class="c-label">Email</span><span class="c-val">support@khmeroom.com</span></div>
+      </div>
+      <div class="contact-row">
+        <span class="c-icon">📞</span>
+        <div><span class="c-label">Phone / WhatsApp</span><span class="c-val">+855 23 456 789</span></div>
+      </div>
+      <div class="contact-row">
+        <span class="c-icon">💬</span>
+        <div><span class="c-label">Telegram</span><span class="c-val">@KhmeRoomSupport</span></div>
+      </div>
+      <div class="contact-row">
+        <span class="c-icon">📍</span>
+        <div><span class="c-label">Office</span><span class="c-val">Phnom Penh, Cambodia</span></div>
+      </div>
+      <div class="contact-row">
+        <span class="c-icon">🕐</span>
+        <div><span class="c-label">Hours</span><span class="c-val">Mon–Sun, 7:00 AM – 10:00 PM (ICT)</span></div>
+      </div>
+    </div>
+    <div class="modal-section">
+      <h3>Common Questions</h3>
+      <div class="info-grid">
+        <div class="info-card">
+          <h4>🔄 Cancellations</h4>
+          <p>Free cancellation up to 24 hours before check-in on most bookings.</p>
+        </div>
+        <div class="info-card">
+          <h4>💳 Payments</h4>
+          <p>ABA Pay, Wing, KHQR, Visa/Mastercard accepted in USD & KHR.</p>
+        </div>
+        <div class="info-card">
+          <h4>🏨 Hotel Issues</h4>
+          <p>If your hotel doesn't match the listing, we'll find you alternative accommodation.</p>
+        </div>
+        <div class="info-card">
+          <h4>📱 App Support</h4>
+          <p>Download KhmeRoom on iOS & Android.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: LOGIN -->
+<div class="modal-overlay" id="modal-login" onclick="closeModalOutside(event,'modal-login')">
+  <div class="modal-box" style="max-width:420px;">
+    <button class="modal-close" onclick="closeModal('modal-login')">✕</button>
+    <div class="modal-title">Welcome Back 👋</div>
+    <p class="modal-sub">Log in to manage your bookings, wishlist, and preferences.</p>
+    <div class="modal-section">
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div>
+          <label style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--text-muted);display:block;margin-bottom:5px;">Email</label>
+          <input type="email" placeholder="you@example.com" style="width:100%;padding:11px 14px;border:1.5px solid var(--card-border);border-radius:11px;font-family:'Poppins',sans-serif;font-size:0.85rem;outline:none;transition:border-color 0.2s;" onfocus="this.style.borderColor='var(--green-500)'" onblur="this.style.borderColor='var(--card-border)'">
+        </div>
+        <div>
+          <label style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--text-muted);display:block;margin-bottom:5px;">Password</label>
+          <input type="password" placeholder="••••••••" style="width:100%;padding:11px 14px;border:1.5px solid var(--card-border);border-radius:11px;font-family:'Poppins',sans-serif;font-size:0.85rem;outline:none;transition:border-color 0.2s;" onfocus="this.style.borderColor='var(--green-500)'" onblur="this.style.borderColor='var(--card-border)'">
+        </div>
+        <button class="login-btn" onclick="showToast('🎉 Welcome to KhmeRoom!');closeModal('modal-login')">Log In</button>
+        <div style="text-align:center;font-size:0.78rem;color:var(--text-muted);">— or —</div>
+        <button style="width:100%;padding:11px;background:#fff;border:1.5px solid var(--card-border);border-radius:11px;font-family:'Poppins',sans-serif;font-size:0.84rem;font-weight:600;cursor:pointer;color:var(--text-body);transition:border-color 0.2s;" onmouseover="this.style.borderColor='var(--green-400)'" onmouseout="this.style.borderColor='var(--card-border)'" onclick="showToast('Redirecting to Google…');closeModal('modal-login')">🔵 Continue with Google</button>
+        <div style="text-align:center;font-size:0.78rem;color:var(--text-muted);">Don't have an account? <span style="color:var(--green-700);font-weight:700;cursor:pointer;" onclick="showToast('Sign-up coming soon!')">Sign up</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: HOTEL DETAIL -->
+<div class="modal-overlay" id="modal-hotel" onclick="closeModalOutside(event,'modal-hotel')">
+  <div class="modal-box" style="max-width:660px;">
+    <button class="modal-close" onclick="closeModal('modal-hotel')">✕</button>
+    <div id="hotelDetailContent"></div>
+  </div>
+</div>
+
+<script>
+// ==================== DATA ====================
+const hotels = [
+  // SIEM REAP
+  {id:1,name:"Angkor Heritage Boutique Hotel",city:"Siem Reap",price:45,rating:4.8,reviews:312,img:"https://images.unsplash.com/photo-1566073771259-6a8506099945?w=500&q=80",tags:["pool","spa","breakfast"],badge:"Top Pick",desc:"A stunning heritage-style hotel steps from Angkor Wat. Lush gardens, outdoor pool, and impeccable Khmer hospitality.",amenities:"Pool · Spa · Free WiFi · Breakfast · Air Con"},
+  {id:2,name:"Lotus Village Resort",city:"Siem Reap",price:38,rating:4.7,reviews:245,img:"https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=500&q=80",tags:["pool","wifi","garden"],badge:"",desc:"Traditional wooden bungalows set around lotus ponds. The perfect escape after a day exploring the temples.",amenities:"Pool · Garden · Free WiFi · Restaurant · Bike Rental"},
+  {id:3,name:"Temple View Hotel",city:"Siem Reap",price:29,rating:4.5,reviews:198,img:"https://images.unsplash.com/photo-1584132967334-10e028bd69f7?w=500&q=80",tags:["wifi","breakfast","budget"],badge:"Great Value",desc:"Comfortable rooms with sunrise views of Angkor. Budget-friendly with warm family service.",amenities:"Free WiFi · Breakfast · Air Con · Tour Desk"},
+  {id:4,name:"Shinta Mani Angkor",city:"Siem Reap",price:185,rating:4.9,reviews:421,img:"https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=500&q=80",tags:["luxury","spa","pool"],badge:"🌟 Luxury",desc:"Award-winning luxury resort with impeccable design, world-class spa, and rooftop pool overlooking ancient temples.",amenities:"Pool · Spa · Fine Dining · Concierge · Yoga"},
+  {id:5,name:"The Siem Reap Hostel",city:"Siem Reap",price:12,rating:4.3,reviews:567,img:"https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=500&q=80",tags:["budget","wifi","social"],badge:"Best Budget",desc:"Lively social hostel popular with backpackers. Rooftop bar, organized temple tours daily.",amenities:"Free WiFi · Bar · Tours · Locker · AC"},
+  {id:6,name:"Sokha Siem Reap Resort",city:"Siem Reap",price:92,rating:4.6,reviews:289,img:"https://images.unsplash.com/photo-1590490360182-c33d57733427?w=500&q=80",tags:["pool","spa","luxury"],badge:"",desc:"Expansive 5-star resort with multiple pools, fine dining, and Apsara dance performances each evening.",amenities:"3 Pools · Spa · Fine Dining · Fitness · Shuttle"},
+  {id:7,name:"Bopha Angkor Hotel",city:"Siem Reap",price:55,rating:4.6,reviews:176,img:"https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=500&q=80",tags:["pool","breakfast","wifi"],badge:"",desc:"Charming boutique hotel with traditional Khmer architecture, beautiful courtyard, and homemade breakfast.",amenities:"Pool · Breakfast · Free WiFi · Garden · Tour"},
+  {id:8,name:"Golden Banana Boutique",city:"Siem Reap",price:48,rating:4.7,reviews:203,img:"https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=500&q=80",tags:["pool","wifi","boutique"],badge:"",desc:"Adults-only boutique hotel with infinity pool, stylish rooms, and an intimate, relaxed atmosphere.",amenities:"Infinity Pool · Bar · Free WiFi · Netflix · AC"},
+  {id:9,name:"Anantara Angkor Resort",city:"Siem Reap",price:220,rating:4.9,reviews:318,img:"https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=500&q=80",tags:["luxury","spa","pool"],badge:"🌟 Luxury",desc:"Ultra-luxury colonial-style resort with butler service, helicopter tours to Angkor, and a world-class spa.",amenities:"Pool · Spa · Butler · Restaurant · Yoga"},
+  {id:10,name:"Mysteres d'Angkor Hotel",city:"Siem Reap",price:67,rating:4.5,reviews:144,img:"https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=500&q=80",tags:["pool","wifi","breakfast"],badge:"",desc:"French colonial charm meets Khmer hospitality. Hidden gem with a peaceful pool garden.",amenities:"Pool · Breakfast · Free WiFi · Bar · Terrace"},
+  {id:11,name:"Pub Street Guesthouse",city:"Siem Reap",price:18,rating:4.2,reviews:389,img:"https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=500&q=80",tags:["budget","wifi","central"],badge:"Central",desc:"Right on famous Pub Street. Great location for nightlife and the vibrant Siem Reap food scene.",amenities:"Free WiFi · Air Con · Reception 24h · Tours"},
+  {id:12,name:"Tara Angkor Hotel",city:"Siem Reap",price:76,rating:4.6,reviews:231,img:"https://images.unsplash.com/photo-1568084680786-a84f91d1153c?w=500&q=80",tags:["pool","spa","breakfast"],badge:"",desc:"Elegant resort-style hotel with beautiful gardens, large swimming pool, and excellent Khmer cuisine.",amenities:"Pool · Spa · Breakfast · Restaurant · Tuk-Tuk"},
+  // PHNOM PENH
+  {id:13,name:"Raffles Hotel Le Royal",city:"Phnom Penh",price:195,rating:4.9,reviews:502,img:"https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=500&q=80",tags:["luxury","spa","pool"],badge:"🏆 Historic",desc:"A legendary 1929 grand hotel, fully restored. Where royalty and dignitaries have stayed for a century. Impeccable.",amenities:"Pool · Spa · Fine Dining · Bar · Tennis · Ballroom"},
+  {id:14,name:"Rosewood Phnom Penh",city:"Phnom Penh",price:250,rating:4.9,reviews:344,img:"https://images.unsplash.com/photo-1629140727571-9b5c6f6267b4?w=500&q=80",tags:["luxury","rooftop","spa"],badge:"🌟 Luxury",desc:"Perched on the 38th floor with panoramic Mekong views. Ultra-modern luxury in the heart of the capital.",amenities:"Infinity Pool · Spa · Sky Bar · Fine Dining · Gym"},
+  {id:15,name:"Phnom Penh Hotel",city:"Phnom Penh",price:42,rating:4.4,reviews:287,img:"https://images.unsplash.com/photo-1445019980597-93fa8acb246c?w=500&q=80",tags:["riverside","wifi","breakfast"],badge:"Riverside",desc:"Classic hotel on the banks of the Tonlé Sap river. Sunset views, buffet breakfast, and great value.",amenities:"Breakfast · River View · Free WiFi · Pool · Tour"},
+  {id:16,name:"Kabiki Boutique Hotel",city:"Phnom Penh",price:68,rating:4.7,reviews:193,img:"https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=500&q=80",tags:["pool","boutique","wifi"],badge:"",desc:"Family-run boutique hotel with a gorgeous tropical garden pool. Personal service that feels like home.",amenities:"Garden Pool · Breakfast · WiFi · Bike Rental · AC"},
+  {id:17,name:"Mad Monkey Hostel PP",city:"Phnom Penh",price:11,rating:4.4,reviews:712,img:"https://images.unsplash.com/photo-1529408686214-b48b8532f72c?w=500&q=80",tags:["budget","social","wifi"],badge:"Backpacker 🎒",desc:"Legendary social hostel. Rooftop pool, bar, nightly events. The best place to meet fellow travelers.",amenities:"Rooftop Pool · Bar · WiFi · Lockers · Tours"},
+  {id:18,name:"The Plantation Urban Resort",city:"Phnom Penh",price:85,rating:4.6,reviews:221,img:"https://images.unsplash.com/photo-1578645510447-e20b4311e3ce?w=500&q=80",tags:["pool","spa","boutique"],badge:"",desc:"Art deco colonial hotel surrounded by lush tropical gardens. An urban oasis in the city center.",amenities:"Pool · Spa · Restaurant · Bar · Shuttle · WiFi"},
+  {id:19,name:"Hyatt Regency Phnom Penh",city:"Phnom Penh",price:130,rating:4.7,reviews:398,img:"https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=500&q=80",tags:["pool","spa","luxury"],badge:"",desc:"Modern luxury in the city center. Rooftop pool, all-day dining, and easy access to the Royal Palace.",amenities:"Rooftop Pool · Spa · Restaurant · Gym · Concierge"},
+  {id:20,name:"Palace Gate Hotel",city:"Phnom Penh",price:52,rating:4.5,reviews:165,img:"https://images.unsplash.com/photo-1600011689032-8b628b8a8747?w=500&q=80",tags:["wifi","breakfast","central"],badge:"",desc:"Conveniently located near the Royal Palace. Clean, comfortable rooms with excellent street food nearby.",amenities:"Breakfast · Free WiFi · Air Con · 24h Reception"},
+  {id:21,name:"Mekong Sunset Hotel",city:"Phnom Penh",price:36,rating:4.3,reviews:142,img:"https://images.unsplash.com/photo-1602343168117-bb8ffe3e2e9f?w=500&q=80",tags:["riverside","wifi","budget"],badge:"River View",desc:"Affordable riverside hotel with stunning Mekong sunset views from the rooftop terrace.",amenities:"Free WiFi · River View · Rooftop · Restaurant · AC"},
+  {id:22,name:"Cambodiana Hotel",city:"Phnom Penh",price:78,rating:4.5,reviews:267,img:"https://images.unsplash.com/photo-1610641818989-c2051b5e2cfd?w=500&q=80",tags:["pool","riverside","breakfast"],badge:"",desc:"Iconic riverside hotel with panoramic Mekong views, lush gardens, and spacious rooms.",amenities:"Pool · River View · Breakfast · Restaurant · Spa"},
+  // KAMPOT
+  {id:23,name:"Mea Culpa Kampot",city:"Kampot",price:22,rating:4.6,reviews:189,img:"https://images.unsplash.com/photo-1510798831971-661eb04b3739?w=500&q=80",tags:["riverside","wifi","budget"],badge:"River View",desc:"Peaceful riverside bungalows surrounded by jungle. Kayaking, cycling, and evening boat trips available.",amenities:"River View · Kayaks · Bikes · Free WiFi · AC"},
+  {id:24,name:"Kampot Guesthouse & Bar",city:"Kampot",price:15,rating:4.3,reviews:312,img:"https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?w=500&q=80",tags:["budget","social","wifi"],badge:"Budget",desc:"Popular backpacker guesthouse on the Kampot riverfront. Great bar, live music, and a friendly crowd.",amenities:"Bar · Riverfront · Free WiFi · Tours · Dorms+Rooms"},
+  {id:25,name:"The Columns Hotel",city:"Kampot",price:58,rating:4.7,reviews:156,img:"https://images.unsplash.com/photo-1549294413-26f195200c16?w=500&q=80",tags:["pool","boutique","breakfast"],badge:"Boutique",desc:"Beautifully restored French colonial villa. Swimming pool, tropical garden, and gourmet breakfast.",amenities:"Pool · Breakfast · Garden · WiFi · Yoga · AC"},
+  {id:26,name:"Mad Monkey Kampot",city:"Kampot",price:13,rating:4.5,reviews:445,img:"https://images.unsplash.com/photo-1590479773265-7464e5d48118?w=500&q=80",tags:["pool","social","budget"],badge:"Popular",desc:"Social hostel with pool parties, zipline, and nightly events. A legendary stop on the Cambodia backpacker trail.",amenities:"Pool · Bar · Zipline · WiFi · Dorms+Private Rooms"},
+  {id:27,name:"Kampot Eco Lodge",city:"Kampot",price:32,rating:4.6,reviews:98,img:"https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=500&q=80",tags:["eco","wifi","riverside"],badge:"Eco Stay 🌿",desc:"Sustainable bamboo bungalows by the river. Solar power, organic garden, and breathtaking mountain views.",amenities:"River View · Organic Breakfast · WiFi · Kayaks · AC"},
+  {id:28,name:"Rikitikitavi Kampot",city:"Kampot",price:44,rating:4.7,reviews:167,img:"https://images.unsplash.com/photo-1540541338537-1220205ac580?w=500&q=80",tags:["pool","breakfast","riverside"],badge:"",desc:"Dutch-owned boutique hotel with stunning pool, excellent cuisine, and warm personal hospitality.",amenities:"Pool · Breakfast · WiFi · Restaurant · Bikes · AC"},
+  {id:29,name:"Kampot River House",city:"Kampot",price:27,rating:4.4,reviews:112,img:"https://images.unsplash.com/photo-1625244724120-1fd1d34d00f6?w=500&q=80",tags:["riverside","wifi","budget"],badge:"",desc:"Charming French-colonial guesthouse directly on the river. Simple, clean, with a wonderful terrace.",amenities:"River View · Free WiFi · Terrace · Air Con · Tours"},
+  {id:30,name:"Bohemiaz Resort",city:"Kampot",price:39,rating:4.5,reviews:134,img:"https://images.unsplash.com/photo-1561501900-3701fa6a0864?w=500&q=80",tags:["pool","garden","wifi"],badge:"",desc:"Beautiful garden resort with jungle pool, art installations, and a creative international crowd.",amenities:"Pool · Garden · Restaurant · WiFi · Yoga · Events"},
+  {id:31,name:"Mango Sky Bar Hotel",city:"Kampot",price:19,rating:4.2,reviews:201,img:"https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?w=500&q=80",tags:["rooftop","budget","wifi"],badge:"",desc:"Rooftop bar hotel with spectacular views over Kampot's colonial town and the distant Bokor Mountain.",amenities:"Rooftop Bar · River View · WiFi · Air Con · Tours"},
+  // KEP
+  {id:32,name:"Kep Beach Hotel",city:"Kep",price:48,rating:4.5,reviews:143,img:"https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=500&q=80",tags:["beach","pool","seafood"],badge:"Beachfront 🏖️",desc:"Right on Kep's famous pebble beach. Fresh crab dinners, sunset cocktails, and peaceful beachside rooms.",amenities:"Beach · Pool · Seafood · Free WiFi · AC · Crab Market"},
+  {id:33,name:"Knai Bang Chatt",city:"Kep",price:145,rating:4.8,reviews:289,img:"https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=500&q=80",tags:["luxury","beach","villa"],badge:"🌟 Luxury",desc:"Award-winning villa resort on the Kep waterfront. Private villas, sunset pools, and world-class dining.",amenities:"Private Pools · Fine Dining · Beach · Spa · Sailing"},
+  {id:34,name:"Kep Lodge",city:"Kep",price:35,rating:4.5,reviews:127,img:"https://images.unsplash.com/photo-1504615755583-2916b52192a3?w=500&q=80",tags:["nature","wifi","budget"],badge:"Nature 🌿",desc:"Hillside wooden bungalows surrounded by jungle. Incredible views, birdsong, and the freshest sea breeze.",amenities:"Nature Views · WiFi · Restaurant · Hammocks · AC"},
+  {id:35,name:"Veranda Natural Resort",city:"Kep",price:72,rating:4.7,reviews:198,img:"https://images.unsplash.com/photo-1534430480872-3498386e7856?w=500&q=80",tags:["pool","nature","breakfast"],badge:"",desc:"Eco-friendly resort with stunning hilltop views, gorgeous pool, and freshly prepared Khmer cuisine.",amenities:"Pool · Breakfast · Nature Views · WiFi · Yoga"},
+  {id:36,name:"Botanica Kep",city:"Kep",price:55,rating:4.6,reviews:112,img:"https://images.unsplash.com/photo-1595521624992-91c76ed16e43?w=500&q=80",tags:["pool","garden","boutique"],badge:"Boutique",desc:"Beautifully designed boutique resort in a tropical garden. Saltwater pool, Thai massage, and fresh juices.",amenities:"Saltwater Pool · Massage · Garden · WiFi · AC"},
+  {id:37,name:"Kep Seaside Guesthouse",city:"Kep",price:22,rating:4.3,reviews:89,img:"https://images.unsplash.com/photo-1578645510447-e20b4311e3ce?w=500&q=80",tags:["beach","budget","wifi"],badge:"",desc:"Simple, clean seafront guesthouse. Family-run with incredible sunset views and delicious home-cooked meals.",amenities:"Sea View · Meals · WiFi · Fan+AC · Hammocks"},
+  {id:38,name:"Tree Top Kep Resort",city:"Kep",price:64,rating:4.6,reviews:134,img:"https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=500&q=80",tags:["nature","pool","views"],badge:"",desc:"Elevated jungle resort with incredible panoramic sea views, private pool suites, and forest walks.",amenities:"Pool Suites · Sea View · Forest · WiFi · Restaurant"},
+  {id:39,name:"Sailing Club Kep",city:"Kep",price:42,rating:4.4,reviews:165,img:"https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=500&q=80",tags:["beach","seafood","wifi"],badge:"",desc:"Casual beachfront hotel at the famous Sailing Club. Great crab, cold beer, and hammocks by the sea.",amenities:"Beach · Restaurant · WiFi · Hammocks · Sailing"},
+  // MIXED EXTRA
+  {id:40,name:"The White Rabbit Siem Reap",city:"Siem Reap",price:33,rating:4.5,reviews:178,img:"https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=500&q=80",tags:["boutique","pool","wifi"],badge:"",desc:"Quirky boutique hotel with whimsical decor, cozy pool garden, and delicious homemade pastries each morning.",amenities:"Pool · Breakfast · WiFi · Garden · AC"},
+  {id:41,name:"Sokha Phnom Penh Hotel",city:"Phnom Penh",price:98,rating:4.6,reviews:312,img:"https://images.unsplash.com/photo-1590490360182-c33d57733427?w=500&q=80",tags:["pool","spa","luxury"],badge:"",desc:"5-star tower hotel on the Mekong. Three restaurants, large pool terrace, and stunning city views.",amenities:"Pool · Spa · 3 Restaurants · Gym · City Views"},
+  {id:42,name:"Kampot Riviera Hotel",city:"Kampot",price:46,rating:4.6,reviews:145,img:"https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=500&q=80",tags:["riverside","pool","breakfast"],badge:"",desc:"Elegant riverside hotel with a beautiful infinity pool facing the Kampot River and Bokor Mountain.",amenities:"Infinity Pool · Breakfast · River View · WiFi · AC"},
+  {id:43,name:"Angkor Miracle Resort",city:"Siem Reap",price:115,rating:4.7,reviews:234,img:"https://images.unsplash.com/photo-1566073771259-6a8506099945?w=500&q=80",tags:["pool","spa","breakfast"],badge:"",desc:"Spacious resort with manicured gardens, large free-form pool, spa, and daily Apsara dance shows.",amenities:"Pool · Spa · Show · Breakfast · Tennis · Shuttle"},
+  {id:44,name:"The Grand Kep",city:"Kep",price:88,rating:4.7,reviews:97,img:"https://images.unsplash.com/photo-1504615755583-2916b52192a3?w=500&q=80",tags:["luxury","beach","pool"],badge:"",desc:"Newly opened grand hotel on Kep's seafront. Contemporary design, beachfront pool, and fresh lobster dining.",amenities:"Pool · Seafood Restaurant · Beach · WiFi · Spa"},
+  {id:45,name:"Phnom Penh Boutique Hotel",city:"Phnom Penh",price:58,rating:4.5,reviews:188,img:"https://images.unsplash.com/photo-1629140727571-9b5c6f6267b4?w=500&q=80",tags:["boutique","pool","wifi"],badge:"",desc:"Intimate boutique hotel in BKK1 neighborhood. Stylish rooms, plunge pool, and the best local coffee shop.",amenities:"Plunge Pool · Coffee Shop · WiFi · AC · Concierge"},
+  {id:46,name:"Bambu Kampot Hotel",city:"Kampot",price:28,rating:4.4,reviews:167,img:"https://images.unsplash.com/photo-1625244724120-1fd1d34d00f6?w=500&q=80",tags:["eco","wifi","riverside"],badge:"Eco 🌿",desc:"Sustainable bamboo hotel by the river. Hammocks, yoga, electric bikes, and a zero-plastic kitchen.",amenities:"River View · Yoga · eBikes · WiFi · Hammocks · Meals"},
+  {id:47,name:"Siem Reap Pub Crawl Hotel",city:"Siem Reap",price:16,rating:4.2,reviews:432,img:"https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=500&q=80",tags:["budget","social","wifi"],badge:"Party 🎉",desc:"Social hub hotel in the heart of Pub Street. Pool table, rooftop bar, and nightly events for travelers.",amenities:"Rooftop Bar · WiFi · Pool Table · Tours · AC"},
+  {id:48,name:"Kep Crab Shack & Hotel",city:"Kep",price:30,rating:4.4,reviews:108,img:"https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=500&q=80",tags:["beach","seafood","budget"],badge:"Seafood 🦀",desc:"Cozy beachside hotel famous for its fresh crab market access and stunning sunset sea views.",amenities:"Beach View · Crab Dinners · WiFi · Air Con · Sunset Terrace"},
+  {id:49,name:"Frangipani Villa Hotel",city:"Phnom Penh",price:72,rating:4.6,reviews:221,img:"https://images.unsplash.com/photo-1600011689032-8b628b8a8747?w=500&q=80",tags:["pool","boutique","spa"],badge:"Boutique",desc:"Charming colonial villa hotel with tropical pool garden. A peaceful oasis in the busy capital.",amenities:"Pool · Spa · Garden · Breakfast · WiFi · AC"},
+  {id:50,name:"Sokha Angkor Resort",city:"Siem Reap",price:108,rating:4.8,reviews:367,img:"https://images.unsplash.com/photo-1534430480872-3498386e7856?w=500&q=80",tags:["luxury","pool","spa"],badge:"Top Rated ⭐",desc:"One of Siem Reap's finest resorts. Lavish pool, world-class Khmer buffet, and temple sunrise excursions.",amenities:"Pool · Spa · Buffet · Temple Tours · Gym · WiFi"},
+];
+
+// ==================== STATE ====================
+let state = {
+  rooms:1, adults:1, children:0,
+  scRooms:1, scAdults:1, scChildren:0,
+  liked:{}
+};
+
+// ==================== RENDER HOTELS ====================
+function renderHotels(list) {
+  const grid = document.getElementById('hotelGrid');
+  grid.innerHTML = list.map(h => `
+    <div class="hotel-card" id="hcard-${h.id}" onclick="openHotelDetail(${h.id})">
+      <div class="hotel-img-wrap">
+        <img src="${h.img}" alt="${h.name}" loading="lazy">
+        ${h.badge ? `<div class="hotel-badge${h.badge.includes('Luxury')?' gold':''}">${h.badge}</div>` : ''}
+        <button class="hotel-wishlist ${state.liked[h.id]?'liked':''}" onclick="event.stopPropagation();toggleLike(${h.id})">${state.liked[h.id]?'❤️':'🤍'}</button>
+      </div>
+      <div class="hotel-info">
+        <div class="hotel-location"><div class="loc-dot"></div>${h.city}, Cambodia</div>
+        <div class="hotel-name">${h.name}</div>
+        <div class="hotel-tags">
+          ${h.tags.slice(0,3).map(t=>`<span class="h-tag">${t}</span>`).join('')}
+        </div>
+        <div class="hotel-meta">
+          <div class="hotel-rating"><span class="star">★</span> ${h.rating} <span style="color:var(--text-muted);font-weight:400;">(${h.reviews})</span></div>
+          <div class="hotel-price">$${h.price} <span>/ night</span></div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function filterHotels(key, chipEl) {
+  if(chipEl) {
+    document.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('active'));
+    chipEl.classList.add('active');
+  }
+  let filtered = hotels;
+  if(key !== 'all') {
+    filtered = hotels.filter(h =>
+      h.city === key ||
+      h.tags.includes(key) ||
+      (key==='budget' && h.price < 30) ||
+      (key==='luxury' && h.price >= 100)
+    );
+  }
+  document.getElementById('hotelSubtitle').textContent = `${filtered.length} properties found`;
+  renderHotels(filtered);
+}
+
+// ==================== HOTEL DETAIL ====================
+function openHotelDetail(id) {
+  const h = hotels.find(x=>x.id===id);
+  if(!h) return;
+  document.getElementById('hotelDetailContent').innerHTML = `
+    <div style="margin-bottom:14px;border-radius:14px;overflow:hidden;aspect-ratio:16/9;">
+      <img src="${h.img}" alt="${h.name}" style="width:100%;height:100%;object-fit:cover;">
+    </div>
+    <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--text-muted);margin-bottom:4px;">📍 ${h.city}, Cambodia</div>
+    <div class="modal-title" style="font-size:1.4rem;padding-right:0;margin-bottom:6px;">${h.name}</div>
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+      <span style="display:flex;align-items:center;gap:4px;font-size:0.84rem;font-weight:600;color:var(--text-body);">★ <span style="color:var(--accent-gold);">${h.rating}</span> · ${h.reviews} reviews</span>
+      <span style="width:4px;height:4px;border-radius:50%;background:var(--card-border);"></span>
+      <span style="font-size:0.84rem;font-weight:700;color:var(--green-700);">$${h.price} / night</span>
+    </div>
+    <p style="font-size:0.86rem;color:var(--text-body);line-height:1.7;margin-bottom:18px;">${h.desc}</p>
+    <div class="modal-section">
+      <h3>Amenities</h3>
+      <p style="font-size:0.84rem;color:var(--text-body);">${h.amenities}</p>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:6px;">
+      <button style="background:var(--green-700);color:#fff;border:none;padding:12px 24px;border-radius:11px;font-family:'Poppins',sans-serif;font-size:0.86rem;font-weight:700;cursor:pointer;flex:1;" onclick="showToast('🎉 Booking coming soon — stay tuned!');closeModal('modal-hotel')">Book Now — $${h.price}/night</button>
+      <button style="background:#fff;border:1.5px solid var(--card-border);padding:12px 18px;border-radius:11px;font-family:'Poppins',sans-serif;font-size:1rem;cursor:pointer;" onclick="toggleLike(${h.id});this.textContent=state.liked[${h.id}]?'❤️':'🤍'">${state.liked[id]?'❤️':'🤍'}</button>
+    </div>
+  `;
+  openModal('modal-hotel');
+}
+
+// ==================== WISHLIST ====================
+function toggleLike(id) {
+  state.liked[id] = !state.liked[id];
+  const btn = document.querySelector(`#hcard-${id} .hotel-wishlist`);
+  if(btn) {
+    btn.textContent = state.liked[id] ? '❤️' : '🤍';
+    btn.classList.toggle('liked', state.liked[id]);
+  }
+  showToast(state.liked[id] ? '❤️ Added to wishlist!' : '🤍 Removed from wishlist');
+}
+
+// ==================== COUNTERS ====================
+function increment(k) {
+  if(k==='rooms')     { state.rooms++;    updateNav(); }
+  if(k==='adults')    { state.adults++;   updateNav(); }
+  if(k==='children')  { state.children++; updateNav(); }
+  if(k==='scRooms')   { state.scRooms++;  updateSc(); }
+  if(k==='scAdults')  { state.scAdults++; updateSc(); }
+  if(k==='scChildren'){ state.scChildren++;updateSc(); }
+  refreshCounters();
+}
+
+function decrement(k) {
+  if(k==='rooms'  && state.rooms>1)    { state.rooms--;    updateNav(); }
+  if(k==='adults' && state.adults>1)   { state.adults--;   updateNav(); }
+  if(k==='children'&&state.children>0) { state.children--; updateNav(); }
+  if(k==='scRooms'  && state.scRooms>1)   { state.scRooms--;   updateSc(); }
+  if(k==='scAdults' && state.scAdults>1)  { state.scAdults--;  updateSc(); }
+  if(k==='scChildren'&&state.scChildren>0){ state.scChildren--;updateSc(); }
+  refreshCounters();
+}
+
+function refreshCounters() {
+  document.getElementById('roomCount').textContent  = state.rooms;
+  document.getElementById('adultCount').textContent = state.adults;
+  document.getElementById('childCount').textContent = state.children;
+  document.getElementById('scRoomCount').textContent  = state.scRooms;
+  document.getElementById('scAdultCount').textContent = state.scAdults;
+  document.getElementById('scChildCount').textContent = state.scChildren;
+  document.getElementById('roomMinus').disabled = state.rooms <= 1;
+  document.getElementById('adultMinus').disabled = state.adults <= 1;
+  document.getElementById('childMinus').disabled = state.children <= 0;
+  document.getElementById('scRoomMinus').disabled = state.scRooms <= 1;
+  document.getElementById('scAdultMinus').disabled = state.scAdults <= 1;
+  document.getElementById('scChildMinus').disabled = state.scChildren <= 0;
+}
+
+function updateNav() {
+  document.getElementById('navRooms').textContent = state.rooms + (state.rooms===1?' Room':' Rooms');
+  document.getElementById('navRooms').classList.remove('placeholder');
+  const gTotal = state.adults + state.children;
+  document.getElementById('navGuests').textContent = gTotal + (gTotal===1?' Guest':' Guests');
+  document.getElementById('navGuests').classList.remove('placeholder');
+}
+
+function updateSc() {
+  document.getElementById('scRoomVal').textContent = state.scRooms + (state.scRooms===1?' Room':' Rooms');
+  document.getElementById('scRoomVal').classList.remove('ph');
+  const gTotal = state.scAdults + state.scChildren;
+  document.getElementById('scGuestVal').textContent = gTotal + (gTotal===1?' Guest':' Guests');
+  document.getElementById('scGuestVal').classList.remove('ph');
+}
+
+// ==================== DESTINATION SELECT ====================
+function selectDest(dest) {
+  document.getElementById('navDest').textContent = dest;
+  document.getElementById('navDest').classList.remove('placeholder');
+  closeAllDropdowns();
+}
+
+function selectScDest(dest) {
+  document.getElementById('scDest').textContent = dest;
+  document.getElementById('scDest').classList.remove('ph');
+  closeAllDropdowns();
+}
+
+// ==================== DATE ====================
+function updateDates() {
+  // nav bar search removed; kept for compatibility
+}
+
+function updateScDates() {
+  const ci = document.getElementById('scCheckIn').value;
+  const co = document.getElementById('scCheckOut').value;
+  const ciEl = document.getElementById('scCheckInDisplay');
+  const coEl = document.getElementById('scCheckOutDisplay');
+  if(ci) {
+    ciEl.textContent = formatDate(ci);
+    ciEl.classList.remove('ph');
+  }
+  if(co) {
+    coEl.textContent = formatDate(co);
+    coEl.classList.remove('ph');
+  }
+}
+
+function formatDate(s) {
+  const d = new Date(s + 'T00:00:00');
+  const dd = String(d.getDate()).padStart(2,'0');
+  const mm = String(d.getMonth()+1).padStart(2,'0');
+  const yy = String(d.getFullYear()).slice(-2);
+  return dd + '/' + mm + '/' + yy;
+}
+
+// ==================== SEARCH ====================
+function doSearch() {
+  showToast('🔍 Searching available hotels…');
+  setTimeout(()=>showToast('✅ Showing 50 properties in Cambodia!'),1500);
+}
+
+// ==================== DROPDOWNS ====================
+function toggleDropdown(id) {
+  const panel = document.getElementById(id);
+  const isOpen = panel.classList.contains('open');
+  closeAllDropdowns();
+  if(!isOpen) panel.classList.add('open');
+}
+
+function toggleNavMenu(id) {
+  const menu = document.getElementById(id);
+  const isOpen = menu.classList.contains('open');
+  closeAllNavMenus();
+  if(!isOpen) menu.classList.add('open');
+}
+
+function closeAllDropdowns() {
+  document.querySelectorAll('.dropdown-panel').forEach(p=>p.classList.remove('open'));
+}
+
+function closeAllNavMenus() {
+  document.querySelectorAll('.nav-dropdown').forEach(m=>m.classList.remove('open'));
+}
+
+// ==================== MODALS ====================
+function openModal(id) {
+  closeAllDropdowns();closeAllNavMenus();
+  document.getElementById(id).classList.add('open');
+  document.body.style.overflow='hidden';
+}
+
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+  document.body.style.overflow='';
+}
+
+function closeModalOutside(e, id) {
+  if(e.target===document.getElementById(id)) closeModal(id);
+}
+
+// ==================== LANG ====================
+function setLang(code, display) {
+  document.getElementById('langDisplay').textContent = display;
+  document.querySelectorAll('.lang-chip').forEach(c=>c.classList.remove('active'));
+  event.target.classList.add('active');
+  showToast('🌐 Language set to ' + code);
+  closeAllNavMenus();
+}
+
+// ==================== TOAST ====================
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(()=>t.classList.remove('show'), 2800);
+}
+
+// ==================== SCROLL TOP ====================
+window.addEventListener('scroll', ()=>{
+  document.getElementById('scrollTop').classList.toggle('visible', window.scrollY > 400);
+});
+
+// ==================== CLOSE ON OUTSIDE CLICK ====================
+document.addEventListener('click', e => {
+  if(!e.target.closest('.search-segment') && !e.target.closest('.sc-segment'))
+    closeAllDropdowns();
+  if(!e.target.closest('.nav-menu-btn') && !e.target.closest('.nav-dropdown'))
+    closeAllNavMenus();
+});
+
+// ==================== INIT ====================
+renderHotels(hotels);
+</script>
+</body>
+</html>
